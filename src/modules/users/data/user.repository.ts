@@ -15,7 +15,8 @@ export class UserRepository {
   insertAndGetUser(payload: CreateUserDto): Promise<UserDao> {
     return this.userRepository.save({
       id: uuidv4(),
-      role: payload.role,
+      role: 'user',
+      email: payload.email,
       username: payload.username,
       firstName: payload.firstName,
       lastName: payload.lastName,
