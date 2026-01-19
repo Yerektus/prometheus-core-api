@@ -9,10 +9,10 @@ export abstract class BaseDao {
   @PrimaryColumn({ name: 'id', type: 'uuid' })
   id: string;
 
-  @CreateDateColumn({ name: 'created_at', type: 'time with time zone' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'time with time zone' })
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp with time zone' })
   updatedAt: Date;
 
   @DeleteDateColumn({
