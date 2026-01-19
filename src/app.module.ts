@@ -3,9 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getDatabaseConfig } from './config/database.config';
 import { getAppConfig } from './config/app.config';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserDao } from './common/dao/user.dao';
+import { UserAccessTokenDao } from './common/dao/user-access-token.dao';
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [getDatabaseConfig, getAppConfig],
@@ -22,6 +26,7 @@ import { getAppConfig } from './config/app.config';
           username: databaseConfig.username,
           password: databaseConfig.password,
           database: databaseConfig.database,
+          entities: [UserDao, UserAccessTokenDao],
           synchronize: false,
         };
       },
