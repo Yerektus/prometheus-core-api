@@ -4,6 +4,7 @@ import { UserDao } from 'src/common/dao/user.dao';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { UserEntity } from 'src/common/entities/user.entity';
 
 @Injectable()
 export class UserRepository {
@@ -12,7 +13,7 @@ export class UserRepository {
     private readonly userRepository: Repository<UserDao>,
   ) {}
 
-  insertAndGetUser(payload: CreateUserDto): Promise<UserDao> {
+  insertAndGetUser(payload: CreateUserDto): Promise<UserEntity> {
     return this.userRepository.save({
       id: uuidv4(),
       role: 'user',
@@ -25,7 +26,7 @@ export class UserRepository {
     });
   }
 
-  getUserByEmail(email: string): Promise<UserDao | null> {
+  getUserByEmail(email: string): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       where: {
         email: email,
@@ -33,7 +34,7 @@ export class UserRepository {
     });
   }
 
-  getUserById(id: string): Promise<UserDao | null> {
+  getUserById(id: string): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       where: {
         id: id,

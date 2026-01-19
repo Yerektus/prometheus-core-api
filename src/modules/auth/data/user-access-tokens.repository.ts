@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAccessTokenDao } from 'src/common/dao/user-access-token.dao';
+import { UserAccessTokenEntity } from 'src/common/entities/user-access-token.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,7 +15,7 @@ export class UserAccessTokensRepository {
   insertAndGetUserAccessToken(
     userId: string,
     token: string,
-  ): Promise<UserAccessTokenDao> {
+  ): Promise<UserAccessTokenEntity> {
     return this.userAccessTokensRepository.save({
       id: uuidv4(),
       userId: userId,
@@ -22,7 +23,7 @@ export class UserAccessTokensRepository {
     });
   }
 
-  getOneByToken(token: string): Promise<UserAccessTokenDao | null> {
+  getOneByToken(token: string): Promise<UserAccessTokenEntity | null> {
     return this.userAccessTokensRepository.findOneBy({ token });
   }
 
