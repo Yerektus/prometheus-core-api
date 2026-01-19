@@ -7,6 +7,7 @@ import { ErrorCode } from 'src/common/constants/error-code.constant';
 import { hashPassword } from 'src/common/utils/hash-password';
 import { JwtService } from '@nestjs/jwt';
 import { UserDao } from 'src/common/dao/user.dao';
+import { AuthEntity } from 'src/common/entities/auth.entity';
 
 @Injectable()
 export class AuthService {
@@ -16,9 +17,7 @@ export class AuthService {
     private readonly usersRepository: UserRepository,
   ) {}
 
-  async register(
-    payload: CreateUserDto,
-  ): Promise<[UserDao, { accessToken: string }]> {
+  async register(payload: CreateUserDto): Promise<[UserDao, AuthEntity]> {
     const existUser = await this.usersRepository.getUserByEmail(payload.email);
 
     if (existUser) {
