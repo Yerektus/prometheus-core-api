@@ -45,7 +45,6 @@ export class UserDao extends BaseDao {
     name: 'password',
     type: 'varchar',
     length: 255,
-    select: false,
     nullable: false,
   })
   password: string;
