@@ -4,10 +4,12 @@ import { UserRepository } from 'src/modules/users/data/user.repository';
 import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
 import { buildHttpError } from 'src/common/utils/build-http-error';
 import { ErrorCode } from 'src/common/constants/error-code.constant';
-import { hashPassword } from 'src/common/utils/hash-password';
+import { comparePassword, hashPassword } from 'src/common/utils/hash-password';
 import { JwtService } from '@nestjs/jwt';
 import { UserDao } from 'src/common/dao/user.dao';
 import { AuthEntity } from 'src/common/entities/auth.entity';
+import { UserEntity } from 'src/common/entities/user.entity';
+import { LoginUserDto } from '../dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,6 +34,29 @@ export class AuthService {
     const auth = await this.createAndGetAccessToken(createdUser.id);
 
     return [createdUser, auth];
+  }
+
+  async login(payload: LoginUserDto): Promise<[UserEntity, AuthEntity]> {
+    const existUser = await this.usersRepository.getUserByEmail(payload.email);
+
+    if (!existUser) {
+      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
+    }
+
+    const isPasswordValid = await comparePassword(
+      payload.password,
+      existUser.password,
+    );
+    if (!isPasswordValid) {
+      throw buildHttpError(
+        ErrorCode.CredentialsAreInvalid,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const auth = await this.createAndGetAccessToken(existUser.id);
+
+    return [existUser, auth];
   }
 
   private async createAndGetAccessToken(userId: string) {
