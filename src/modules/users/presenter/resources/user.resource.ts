@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UserDao } from 'src/common/dao/user.dao';
+import { UserEntity } from 'src/common/entities/user.entity';
 
 @Injectable()
 export class UserResource {
-  convert(payload: UserDao) {
+  convert(payload: UserEntity) {
     return {
       id: payload.id,
       role: payload.role,

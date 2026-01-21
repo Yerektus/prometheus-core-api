@@ -6,7 +6,6 @@ import { buildHttpError } from 'src/common/utils/build-http-error';
 import { ErrorCode } from 'src/common/constants/error-code.constant';
 import { comparePassword, hashPassword } from 'src/common/utils/hash-password';
 import { JwtService } from '@nestjs/jwt';
-import { UserDao } from 'src/common/dao/user.dao';
 import { AuthEntity } from 'src/common/entities/auth.entity';
 import { UserEntity } from 'src/common/entities/user.entity';
 import { LoginUserDto } from '../dto/login-user.dto';
@@ -19,7 +18,7 @@ export class AuthService {
     private readonly usersRepository: UsersRepository,
   ) {}
 
-  async register(payload: CreateUserDto): Promise<[UserDao, AuthEntity]> {
+  async register(payload: CreateUserDto): Promise<[UserEntity, AuthEntity]> {
     const existUser = await this.usersRepository.getUserByEmail(payload.email);
 
     if (existUser) {
