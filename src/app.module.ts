@@ -6,13 +6,14 @@ import { getAppConfig } from './config/app.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserDao } from './common/dao/user.dao';
 import { UserAccessTokenDao } from './common/dao/user-access-token.dao';
+import { getJwtConfig } from './config/jwt.config';
 
 @Module({
   imports: [
     AuthModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
-      load: [getDatabaseConfig, getAppConfig],
+      load: [getDatabaseConfig, getAppConfig, getJwtConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
