@@ -25,6 +25,7 @@ export class CreateUserBody {
   email: string;
 
   @IsString()
+  @IsNotEmpty()
   @IsStrongPassword({
     minLength: 8,
     minLowercase: 1,

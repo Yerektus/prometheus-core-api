@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { UserEntity } from 'src/common/entities/user.entity';
 
 @Injectable()
-export class UserRepository {
+export class UsersRepository {
   constructor(
     @InjectRepository(UserDao)
     private readonly userRepository: Repository<UserDao>,

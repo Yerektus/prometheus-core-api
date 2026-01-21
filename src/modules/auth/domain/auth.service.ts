@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { UserAccessTokensRepository } from '../data/user-access-tokens.repository';
-import { UserRepository } from 'src/modules/users/data/user.repository';
+import { UsersRepository } from 'src/modules/users/data/users.repository';
 import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
 import { buildHttpError } from 'src/common/utils/build-http-error';
 import { ErrorCode } from 'src/common/constants/error-code.constant';
@@ -16,7 +16,7 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userAccessTokensRepository: UserAccessTokensRepository,
-    private readonly usersRepository: UserRepository,
+    private readonly usersRepository: UsersRepository,
   ) {}
 
   async register(payload: CreateUserDto): Promise<[UserDao, AuthEntity]> {
@@ -59,6 +59,19 @@ export class AuthService {
     return [existUser, auth];
   }
 
+  async validate(token: string): Promise<UserEntity | null> {
+    const userAccessToken =
+      await this.userAccessTokensRepository.getOneByToken(token);
+
+    if (!userAccessToken) {
+      return null;
+    }
+
+    const user = await this.usersRepository.getUserById(userAccessToken.userId);
+
+    return user ?? null;
+  }
+
   private async createAndGetAccessToken(userId: string) {
     const accessToken = await this.generateAccessToken(userId);
 
@@ -73,13 +86,8 @@ export class AuthService {
   }
 
   private generateAccessToken(userId: string): Promise<string> {
-    return this.jwtService.signAsync(
-      {
-        sub: userId,
-      },
-      {
-        secret: 'todo-secret',
-      },
-    );
+    return this.jwtService.signAsync({
+      sub: userId,
+    });
   }
 }

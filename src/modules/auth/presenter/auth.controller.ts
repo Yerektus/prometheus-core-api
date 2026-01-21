@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from '../domain/auth.service';
 import { CreateUserBody } from './bodies/create-user.body';
-import { UserResource } from 'src/modules/users/resources/user.resource';
+import { UserResource } from 'src/modules/users/presenter/resources/user.resource';
 import { AuthResource } from './resources/auth.resource';
 import { LoginUserBody } from './bodies/login-user.body';
 

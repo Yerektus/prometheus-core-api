@@ -7,10 +7,12 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserDao } from './common/dao/user.dao';
 import { UserAccessTokenDao } from './common/dao/user-access-token.dao';
 import { getJwtConfig } from './config/jwt.config';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
     AuthModule,
+    UsersModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [getDatabaseConfig, getAppConfig, getJwtConfig],
