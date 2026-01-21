@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { BaseDao } from './base.dao';
 import { FireSensorDao } from './fire-sensor.dao';
+import { UserDao } from './user.dao';
 
 @Entity({ name: 'locations' })
 export class LocationDao extends BaseDao {
@@ -42,4 +43,7 @@ export class LocationDao extends BaseDao {
 
   @OneToMany(() => FireSensorDao, (fireSensor) => fireSensor.location)
   fireSensors: FireSensorDao[];
+
+  @ManyToMany(() => UserDao, (user) => user.locations)
+  users: UserDao[];
 }

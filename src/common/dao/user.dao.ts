@@ -1,6 +1,14 @@
-import { Entity, Column, Index, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  Index,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { BaseDao } from './base.dao';
 import { UserAccessTokenDao } from './user-access-token.dao';
+import { LocationDao } from './location.dao';
 
 @Entity({ name: 'users' })
 @Index(['email'])
@@ -54,4 +62,8 @@ export class UserDao extends BaseDao {
     (userAccessToken) => userAccessToken.user,
   )
   accessTokens: UserAccessTokenDao[];
+
+  @ManyToMany(() => LocationDao, (location) => location.users)
+  @JoinTable({ name: 'user_locations' })
+  locations: LocationDao[];
 }
