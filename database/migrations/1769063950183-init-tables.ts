@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class InitProject1769012952883 implements MigrationInterface {
-  name = 'InitProject1769012952883';
+export class InitTables1769063950183 implements MigrationInterface {
+  name = 'InitTables1769063950183';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -17,7 +17,10 @@ export class InitProject1769012952883 implements MigrationInterface {
       `CREATE TABLE "locations" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "country" character varying(255) NOT NULL, "city" character varying(255) NOT NULL, "street" character varying(255) NOT NULL, "floor" character varying(20) NOT NULL, "room" character varying(20) NOT NULL, "latitude" numeric(9,6) NOT NULL, "longitude" numeric(9,6) NOT NULL, CONSTRAINT "UQ_a1d8353c5489209e0509927e29d" UNIQUE ("street"), CONSTRAINT "PK_7cc1c9e3853b94816c094825e74" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "users" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "username" character varying(50) NOT NULL, "role" character varying(50) NOT NULL, "email" character varying(255) NOT NULL, "first_name" character varying(50) NOT NULL, "last_name" character varying(50) NOT NULL, "phone_numbers" character varying(50) NOT NULL, "password" character varying(255) NOT NULL, CONSTRAINT "UQ_fe0bb3f6520ee0469504521e710" UNIQUE ("username"), CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "roles" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "name" character varying(32) NOT NULL, "description" character varying(255) NOT NULL, CONSTRAINT "UQ_648e3f5447f725579d7d4ffdfb7" UNIQUE ("name"), CONSTRAINT "PK_c1433d71a4838793a49dcad46ab" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "users" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "username" character varying(50) NOT NULL, "email" character varying(255) NOT NULL, "first_name" character varying(50) NOT NULL, "last_name" character varying(50) NOT NULL, "phone_numbers" character varying(50) NOT NULL, "password" character varying(255) NOT NULL, CONSTRAINT "UQ_fe0bb3f6520ee0469504521e710" UNIQUE ("username"), CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_fe0bb3f6520ee0469504521e71" ON "users" ("username") `,
@@ -35,6 +38,15 @@ export class InitProject1769012952883 implements MigrationInterface {
       `CREATE INDEX "IDX_6c88885a479bb9c8ab4445e7eb" ON "user_locations" ("locationsId") `,
     );
     await queryRunner.query(
+      `CREATE TABLE "user_roles" ("usersId" uuid NOT NULL, "rolesId" uuid NOT NULL, CONSTRAINT "PK_38ffcfb865fc628fa337d9a0d4f" PRIMARY KEY ("usersId", "rolesId"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "IDX_99b019339f52c63ae615358738" ON "user_roles" ("usersId") `,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "IDX_13380e7efec83468d73fc37938" ON "user_roles" ("rolesId") `,
+    );
+    await queryRunner.query(
       `ALTER TABLE "user_access_tokens" ADD CONSTRAINT "FK_e9d9d0c303432e4e5e48c1c3e90" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
@@ -49,9 +61,24 @@ export class InitProject1769012952883 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "user_locations" ADD CONSTRAINT "FK_6c88885a479bb9c8ab4445e7ebd" FOREIGN KEY ("locationsId") REFERENCES "locations"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
+    await queryRunner.query(
+      `ALTER TABLE "user_roles" ADD CONSTRAINT "FK_99b019339f52c63ae6153587380" FOREIGN KEY ("usersId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "user_roles" ADD CONSTRAINT "FK_13380e7efec83468d73fc37938e" FOREIGN KEY ("rolesId") REFERENCES "roles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `INSERT INTO roles (id, name, description) VALUES (gen_random_uuid(), 'ADMIN', 'Администратор'), (gen_random_uuid(), 'MANAGER', 'Управляющий'), (gen_random_uuid(), 'USER', 'Пользователь') ON CONFLICT DO NOTHING`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "user_roles" DROP CONSTRAINT "FK_13380e7efec83468d73fc37938e"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "user_roles" DROP CONSTRAINT "FK_99b019339f52c63ae6153587380"`,
+    );
     await queryRunner.query(
       `ALTER TABLE "user_locations" DROP CONSTRAINT "FK_6c88885a479bb9c8ab4445e7ebd"`,
     );
@@ -68,6 +95,13 @@ export class InitProject1769012952883 implements MigrationInterface {
       `ALTER TABLE "user_access_tokens" DROP CONSTRAINT "FK_e9d9d0c303432e4e5e48c1c3e90"`,
     );
     await queryRunner.query(
+      `DROP INDEX "public"."IDX_13380e7efec83468d73fc37938"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX "public"."IDX_99b019339f52c63ae615358738"`,
+    );
+    await queryRunner.query(`DROP TABLE "user_roles"`);
+    await queryRunner.query(
       `DROP INDEX "public"."IDX_6c88885a479bb9c8ab4445e7eb"`,
     );
     await queryRunner.query(
@@ -81,6 +115,7 @@ export class InitProject1769012952883 implements MigrationInterface {
       `DROP INDEX "public"."IDX_fe0bb3f6520ee0469504521e71"`,
     );
     await queryRunner.query(`DROP TABLE "users"`);
+    await queryRunner.query(`DROP TABLE "roles"`);
     await queryRunner.query(`DROP TABLE "locations"`);
     await queryRunner.query(`DROP TABLE "fire_sensors"`);
     await queryRunner.query(`DROP TABLE "sensor_readings"`);

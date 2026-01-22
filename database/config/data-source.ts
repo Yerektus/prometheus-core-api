@@ -11,7 +11,7 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: ['src/common/dao/*[!base].dao.ts'],
+  entities: ['src/common/dao/*.dao.ts'],
   migrations: ['database/migrations/*.ts'],
   synchronize: false,
   logging: true,
