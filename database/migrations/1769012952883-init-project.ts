@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class InitProject1769002564378 implements MigrationInterface {
-  name = 'InitProject1769002564378';
+export class InitProject1769012952883 implements MigrationInterface {
+  name = 'InitProject1769012952883';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -14,7 +14,7 @@ export class InitProject1769002564378 implements MigrationInterface {
       `CREATE TABLE "fire_sensors" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "serial_number" character varying(50) NOT NULL, "model" character varying(50) NOT NULL, "is_active" boolean NOT NULL DEFAULT false, "installed_at" TIMESTAMP WITH TIME ZONE NOT NULL, "locationId" uuid, CONSTRAINT "PK_0072140b25e5cf44091aae1f5e3" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "locations" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "country" character varying(255) NOT NULL, "city" character varying(255) NOT NULL, "street" character varying(255) NOT NULL, "building" character varying(255) NOT NULL, "floor" character varying(20) NOT NULL, "room" character varying(20) NOT NULL, "latitude" numeric(9,6) NOT NULL, "longitude" numeric(9,6) NOT NULL, CONSTRAINT "PK_7cc1c9e3853b94816c094825e74" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "locations" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "country" character varying(255) NOT NULL, "city" character varying(255) NOT NULL, "street" character varying(255) NOT NULL, "floor" character varying(20) NOT NULL, "room" character varying(20) NOT NULL, "latitude" numeric(9,6) NOT NULL, "longitude" numeric(9,6) NOT NULL, CONSTRAINT "UQ_a1d8353c5489209e0509927e29d" UNIQUE ("street"), CONSTRAINT "PK_7cc1c9e3853b94816c094825e74" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "users" ("id" uuid NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "username" character varying(50) NOT NULL, "role" character varying(50) NOT NULL, "email" character varying(255) NOT NULL, "first_name" character varying(50) NOT NULL, "last_name" character varying(50) NOT NULL, "phone_numbers" character varying(50) NOT NULL, "password" character varying(255) NOT NULL, CONSTRAINT "UQ_fe0bb3f6520ee0469504521e710" UNIQUE ("username"), CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,

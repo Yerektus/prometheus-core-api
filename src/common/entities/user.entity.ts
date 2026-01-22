@@ -10,6 +10,6 @@ export class UserEntity extends BaseEntity {
   lastName: string;
   phoneNumbers: string;
   password: string;
-  accessTokens: UserAccessTokenEntity[];
-  locations: LocationEntity[];
+  accessTokens?: UserAccessTokenEntity[];
+  locations?: LocationEntity[];
 }

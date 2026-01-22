@@ -8,11 +8,16 @@ import { UserDao } from './common/dao/user.dao';
 import { UserAccessTokenDao } from './common/dao/user-access-token.dao';
 import { getJwtConfig } from './config/jwt.config';
 import { UsersModule } from './modules/users/users.module';
+import { LocationsModule } from './modules/locations/locations.module';
+import { LocationDao } from './common/dao/location.dao';
+import { FireSensorDao } from './common/dao/fire-sensor.dao';
+import { SensorReadingDao } from './common/dao/sensor-reading.dao';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
+    LocationsModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [getDatabaseConfig, getAppConfig, getJwtConfig],
@@ -29,7 +34,13 @@ import { UsersModule } from './modules/users/users.module';
           username: databaseConfig.username,
           password: databaseConfig.password,
           database: databaseConfig.database,
-          entities: [UserDao, UserAccessTokenDao],
+          entities: [
+            UserDao,
+            UserAccessTokenDao,
+            LocationDao,
+            FireSensorDao,
+            SensorReadingDao,
+          ],
           synchronize: false,
         };
       },

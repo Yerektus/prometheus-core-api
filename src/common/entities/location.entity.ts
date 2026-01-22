@@ -5,12 +5,11 @@ import { UserEntity } from './user.entity';
 export class LocationEntity extends BaseEntity {
   country: string;
   city: string;
-  street: string;
-  building: string | null;
+  address: string;
   floor: string | null;
   room: string | null;
   latitude: number;
   longitude: number;
-  user: UserEntity[];
-  fireSensors: FireSensorEntity[];
+  users?: UserEntity[];
+  fireSensor?: FireSensorEntity[];
 }

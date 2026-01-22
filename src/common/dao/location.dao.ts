@@ -11,11 +11,14 @@ export class LocationDao extends BaseDao {
   @Column({ name: 'city', type: 'varchar', length: 255, nullable: false })
   city: string;
 
-  @Column({ name: 'street', type: 'varchar', length: 255, nullable: false })
-  street: string;
-
-  @Column({ name: 'building', type: 'varchar', length: 255 })
-  building: string | null;
+  @Column({
+    name: 'street',
+    type: 'varchar',
+    unique: true,
+    length: 255,
+    nullable: false,
+  })
+  address: string;
 
   @Column({ name: 'floor', type: 'varchar', length: 20 })
   floor: string | null;
