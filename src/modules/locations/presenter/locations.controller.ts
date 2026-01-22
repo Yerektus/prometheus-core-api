@@ -13,7 +13,7 @@ export class LocationsController {
     private readonly locationResource: LocationResource,
   ) {}
 
-  @Authorization()
+  @Authorization('ADMIN')
   @Post('/')
   async createLocation(
     @Authorized() user: UserEntity,

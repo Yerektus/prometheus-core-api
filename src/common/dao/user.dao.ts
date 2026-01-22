@@ -9,6 +9,7 @@ import {
 import { BaseDao } from './base.dao';
 import { UserAccessTokenDao } from './user-access-token.dao';
 import { LocationDao } from './location.dao';
+import { RoleDao } from './role.dao';
 
 @Entity({ name: 'users' })
 @Index(['email'])
@@ -22,9 +23,6 @@ export class UserDao extends BaseDao {
     nullable: false,
   })
   username: string;
-
-  @Column({ name: 'role', type: 'varchar', length: 50, nullable: false })
-  role: string;
 
   @Column({
     name: 'email',
@@ -66,4 +64,8 @@ export class UserDao extends BaseDao {
   @ManyToMany(() => LocationDao, (location) => location.users)
   @JoinTable({ name: 'user_locations' })
   locations: LocationDao[];
+
+  @ManyToMany(() => RoleDao, (role) => role.users)
+  @JoinTable({ name: 'user_roles' })
+  roles: RoleDao[];
 }

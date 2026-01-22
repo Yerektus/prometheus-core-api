@@ -30,6 +30,13 @@ export class AuthService {
       password: await hashPassword(payload.password),
     });
 
+    if (!createdUser) {
+      throw buildHttpError(
+        ErrorCode.InternalServerError,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     const auth = await this.createAndGetAccessToken(createdUser.id);
 
     return [createdUser, auth];

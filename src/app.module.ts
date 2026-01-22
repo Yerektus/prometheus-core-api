@@ -12,12 +12,15 @@ import { LocationsModule } from './modules/locations/locations.module';
 import { LocationDao } from './common/dao/location.dao';
 import { FireSensorDao } from './common/dao/fire-sensor.dao';
 import { SensorReadingDao } from './common/dao/sensor-reading.dao';
+import { RoleDao } from './common/dao/role.dao';
+import { RolesModule } from './modules/roles/roles.module';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
     LocationsModule,
+    RolesModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [getDatabaseConfig, getAppConfig, getJwtConfig],
@@ -40,6 +43,7 @@ import { SensorReadingDao } from './common/dao/sensor-reading.dao';
             LocationDao,
             FireSensorDao,
             SensorReadingDao,
+            RoleDao,
           ],
           synchronize: false,
         };

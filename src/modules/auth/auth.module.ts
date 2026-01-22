@@ -11,9 +11,11 @@ import { ConfigModule } from '@nestjs/config';
 import { getJwtConfig } from 'src/config/jwt.config';
 import { JwtStrategy } from './stratigies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { RolesModule } from '../roles/roles.module';
 
 @Module({
   imports: [
+    RolesModule,
     PassportModule,
     UsersModule,
     TypeOrmModule.forFeature([UserAccessTokenDao]),

@@ -1,10 +1,10 @@
 import { BaseEntity } from './base.entity';
 import { LocationEntity } from './location.entity';
+import { RoleEntity } from './role.entity';
 import { UserAccessTokenEntity } from './user-access-token.entity';
 
 export class UserEntity extends BaseEntity {
   username: string;
-  role: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -12,4 +12,5 @@ export class UserEntity extends BaseEntity {
   password: string;
   accessTokens?: UserAccessTokenEntity[];
   locations?: LocationEntity[];
+  roles?: RoleEntity[];
 }
