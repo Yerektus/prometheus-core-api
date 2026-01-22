@@ -8,10 +8,10 @@ import { UserResource } from './resources/user.resource';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private userResource: UserResource,
+    private readonly userResource: UserResource,
   ) {}
 
-  @Authorization()
+  @Authorization('USER')
   @Get('me')
   async getMe(@Authorized('id') userId: string) {
     const user = await this.usersService.getUserById(userId);

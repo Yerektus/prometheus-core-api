@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { LocationsController } from './presenter/locations.controller';
 import { LocationsService } from './domain/locations.service';
 import { LocationsRepository } from './data/locations.repository';
@@ -8,8 +8,12 @@ import { LocationDao } from 'src/common/dao/location.dao';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([LocationDao]), UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([LocationDao]),
+    forwardRef(() => UsersModule),
+  ],
   controllers: [LocationsController],
   providers: [LocationsService, LocationsRepository, LocationResource],
+  exports: [LocationsService],
 })
 export class LocationsModule {}
