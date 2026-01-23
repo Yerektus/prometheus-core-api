@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { Authorization } from 'src/modules/auth/decorators/authorization.decorator';
 import { Authorized } from 'src/modules/auth/decorators/authorized.decorator';
 import { UsersService } from '../domain/users.service';
 import { UserResource } from './resources/user.resource';
 import { CreateUserBody } from 'src/modules/users/presenter/bodies/create-user.body';
 import { GetUserIdParam } from './params/get-user-id.param';
+import { UpdateUserBody } from './bodies/update-user.body';
 
 @Controller('/v1/users')
 export class UsersController {
@@ -54,6 +55,26 @@ export class UsersController {
   @Get(':user_id')
   async getUserById(@Param() param: GetUserIdParam) {
     const user = await this.usersService.getUserById(param.user_id);
+
+    return {
+      data: this.userResource.convert(user),
+    };
+  }
+
+  @Authorization('USER')
+  @Patch(':user_id')
+  async updateUserById(
+    @Param() param: GetUserIdParam,
+    @Body() body: UpdateUserBody,
+  ) {
+    const user = await this.usersService.updateUserById(param.user_id, {
+      username: body.username,
+      email: body.email,
+      firstName: body.first_name,
+      lastName: body.last_name,
+      phoneNumbers: body.phone_numbers,
+      password: body.password,
+    });
 
     return {
       data: this.userResource.convert(user),

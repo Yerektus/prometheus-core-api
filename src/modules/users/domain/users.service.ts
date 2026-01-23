@@ -4,6 +4,7 @@ import { buildHttpError } from 'src/common/utils/build-http-error';
 import { ErrorCode } from 'src/common/constants/error-code.constant';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserEntity } from 'src/common/entities/user.entity';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -43,5 +44,30 @@ export class UsersService {
 
   getUsers(): Promise<UserEntity[]> {
     return this.usersRepository.getUsers();
+  }
+
+  async updateUserById(
+    userId: string,
+    payload: UpdateUserDto,
+  ): Promise<UserEntity> {
+    const user = await this.usersRepository.getUserById(userId);
+
+    if (!user) {
+      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
+    }
+
+    const updatedUser = await this.usersRepository.updateUserById(
+      userId,
+      payload,
+    );
+
+    if (!updatedUser) {
+      throw buildHttpError(
+        ErrorCode.InternalServerError,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return updatedUser;
   }
 }

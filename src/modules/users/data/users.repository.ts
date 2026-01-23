@@ -6,6 +6,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UserEntity } from 'src/common/entities/user.entity';
 import { RoleDao } from 'src/common/dao/role.dao';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class UsersRepository {
@@ -97,6 +98,29 @@ export class UsersRepository {
 
   getUsers(): Promise<UserEntity[]> {
     return this.userRepository.find({
+      relations: {
+        roles: true,
+      },
+    });
+  }
+
+  async updateUserById(
+    userId: string,
+    payload: UpdateUserDto,
+  ): Promise<UserEntity | null> {
+    await this.userRepository.update(userId, {
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      username: payload.username,
+      email: payload.email,
+      password: payload.password,
+      phoneNumbers: payload.phoneNumbers,
+    });
+
+    return this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
       relations: {
         roles: true,
       },
