@@ -3,6 +3,7 @@ import { UsersRepository } from '../data/users.repository';
 import { buildHttpError } from 'src/common/utils/build-http-error';
 import { ErrorCode } from 'src/common/constants/error-code.constant';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { UserEntity } from 'src/common/entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -30,7 +31,7 @@ export class UsersService {
     return savedUser;
   }
 
-  async getUserById(userId: string) {
+  async getUserById(userId: string): Promise<UserEntity> {
     const user = await this.usersRepository.getUserById(userId);
 
     if (!user) {
@@ -38,5 +39,9 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  getUsers(): Promise<UserEntity[]> {
+    return this.usersRepository.getUsers();
   }
 }

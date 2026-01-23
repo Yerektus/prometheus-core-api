@@ -94,4 +94,12 @@ export class UsersRepository {
       },
     });
   }
+
+  getUsers(): Promise<UserEntity[]> {
+    return this.userRepository.find({
+      relations: {
+        roles: true,
+      },
+    });
+  }
 }

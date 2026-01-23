@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Authorization } from 'src/modules/auth/decorators/authorization.decorator';
 import { Authorized } from 'src/modules/auth/decorators/authorized.decorator';
 import { UsersService } from '../domain/users.service';
 import { UserResource } from './resources/user.resource';
 import { CreateUserBody } from 'src/modules/users/presenter/bodies/create-user.body';
+import { GetUserIdParam } from './params/get-user-id.param';
 
 @Controller('/v1/users')
 export class UsersController {
@@ -33,6 +34,26 @@ export class UsersController {
   @Get('me')
   async getMe(@Authorized('id') userId: string) {
     const user = await this.usersService.getUserById(userId);
+
+    return {
+      data: this.userResource.convert(user),
+    };
+  }
+
+  @Authorization('USER')
+  @Get()
+  async getUsers() {
+    const users = await this.usersService.getUsers();
+
+    return {
+      data: users.map((user) => this.userResource.convert(user)),
+    };
+  }
+
+  @Authorization('USER')
+  @Get(':user_id')
+  async getUserById(@Param() param: GetUserIdParam) {
+    const user = await this.usersService.getUserById(param.user_id);
 
     return {
       data: this.userResource.convert(user),
