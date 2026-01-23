@@ -19,7 +19,10 @@ export class AuthService {
   ) {}
 
   async register(payload: CreateUserDto): Promise<[UserEntity, AuthEntity]> {
-    const existUser = await this.usersRepository.getUserByEmail(payload.email);
+    const existUser = await this.usersRepository.getUserByEmailOrUsername(
+      payload.email,
+      payload.username,
+    );
 
     if (existUser) {
       throw buildHttpError(ErrorCode.UserAlreadyExist, HttpStatus.BAD_REQUEST);
