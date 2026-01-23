@@ -1,8 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Authorization } from 'src/modules/auth/decorators/authorization.decorator';
 import { Authorized } from 'src/modules/auth/decorators/authorized.decorator';
 import { UsersService } from '../domain/users.service';
 import { UserResource } from './resources/user.resource';
+import { CreateUserBody } from 'src/modules/users/presenter/bodies/create-user.body';
 
 @Controller('/v1/users')
 export class UsersController {
@@ -10,6 +11,23 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly userResource: UserResource,
   ) {}
+
+  @Authorization('USER')
+  @Post()
+  async createUser(@Body() body: CreateUserBody) {
+    const user = await this.usersService.createUser({
+      username: body.username,
+      email: body.email,
+      firstName: body.first_name,
+      lastName: body.last_name,
+      phoneNumbers: body.phone_numbers,
+      password: body.password,
+    });
+
+    return {
+      data: this.userResource.convert(user),
+    };
+  }
 
   @Authorization('USER')
   @Get('me')

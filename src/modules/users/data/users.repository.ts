@@ -60,6 +60,22 @@ export class UsersRepository {
     });
   }
 
+  getUserByEmailOrUsername(
+    email: string,
+    username: string,
+  ): Promise<UserEntity | null> {
+    return this.userRepository.findOne({
+      where: [
+        {
+          email: email,
+        },
+        {
+          username: username,
+        },
+      ],
+    });
+  }
+
   getUserByEmail(email: string): Promise<UserEntity | null> {
     return this.userRepository.findOne({
       where: {
