@@ -51,7 +51,7 @@ export class LocationsRepository {
     });
   }
 
-  async getLocationByAddress(address: string): Promise<LocationEntity | null> {
+  getLocationByAddress(address: string): Promise<LocationEntity | null> {
     return this.locationsRepositry.findOne({
       where: {
         address: address,
