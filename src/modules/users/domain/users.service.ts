@@ -70,4 +70,14 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async deleteUserById(userId: string): Promise<void> {
+    const user = await this.usersRepository.getUserById(userId);
+
+    if (!user) {
+      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
+    }
+
+    await this.usersRepository.deleteUserById(userId);
+  }
 }

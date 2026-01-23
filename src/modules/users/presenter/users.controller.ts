@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { Authorization } from 'src/modules/auth/decorators/authorization.decorator';
 import { Authorized } from 'src/modules/auth/decorators/authorized.decorator';
 import { UsersService } from '../domain/users.service';
@@ -79,5 +87,11 @@ export class UsersController {
     return {
       data: this.userResource.convert(user),
     };
+  }
+
+  @Authorization('USER')
+  @Delete(':user_id')
+  async deleteUserById(@Param() param: GetUserIdParam) {
+    await this.usersService.deleteUserById(param.user_id);
   }
 }

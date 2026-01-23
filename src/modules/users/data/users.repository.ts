@@ -126,4 +126,8 @@ export class UsersRepository {
       },
     });
   }
+
+  async deleteUserById(userId: string): Promise<void> {
+    await this.userRepository.softDelete(userId);
+  }
 }
