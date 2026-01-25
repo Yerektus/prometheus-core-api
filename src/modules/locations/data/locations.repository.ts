@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocationDao } from 'src/common/dao/location.dao';
 import { DataSource, Repository } from 'typeorm';
-import { CreateLocationBody } from '../presenter/bodies/create-location.body';
 import { LocationEntity } from 'src/common/entities/location.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { UsersRepository } from 'src/modules/users/data/users.repository';
 import { UserDao } from 'src/common/dao/user.dao';
-import { UpdateLocationBody } from '../presenter/bodies/update-location.body';
+import { CreateLocationDto } from '../dto/create-location.dto';
+import { UpdateLocationDto } from '../dto/update-location.dto';
 
 @Injectable()
 export class LocationsRepository {
@@ -19,7 +19,7 @@ export class LocationsRepository {
   ) {}
 
   insertAndGetLocation(
-    payload: CreateLocationBody,
+    payload: CreateLocationDto,
   ): Promise<LocationEntity | null> {
     return this.dataSource.transaction(async (manager) => {
       const userRepo = manager.getRepository(UserDao);
@@ -83,7 +83,7 @@ export class LocationsRepository {
 
   async updateLocationById(
     locationId: string,
-    payload: UpdateLocationBody,
+    payload: UpdateLocationDto,
   ): Promise<LocationEntity | null> {
     await this.locationsRepositry.update(
       { id: locationId },

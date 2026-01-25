@@ -1,16 +1,16 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { LocationsRepository } from '../data/locations.repository';
-import { CreateLocationBody } from '../presenter/bodies/create-location.body';
 import { LocationEntity } from 'src/common/entities/location.entity';
 import { buildHttpError } from 'src/common/utils/build-http-error';
 import { ErrorCode } from 'src/common/constants/error-code.constant';
-import { UpdateLocationBody } from '../presenter/bodies/update-location.body';
+import { CreateLocationDto } from '../dto/create-location.dto';
+import { UpdateLocationDto } from '../dto/update-location.dto';
 
 @Injectable()
 export class LocationsService {
   constructor(private readonly locationsRepository: LocationsRepository) {}
 
-  async createLocation(payload: CreateLocationBody): Promise<LocationEntity> {
+  async createLocation(payload: CreateLocationDto): Promise<LocationEntity> {
     const location = await this.locationsRepository.getLocationByAddress(
       payload.address,
     );
@@ -52,7 +52,7 @@ export class LocationsService {
 
   async updateLocationById(
     locationId: string,
-    payload: UpdateLocationBody,
+    payload: UpdateLocationDto,
   ): Promise<LocationEntity> {
     const location = await this.locationsRepository.getLocationById(locationId);
 
