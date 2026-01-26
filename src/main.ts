@@ -14,6 +14,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+  app.enableCors();
 
   app.setGlobalPrefix('/api');
 
