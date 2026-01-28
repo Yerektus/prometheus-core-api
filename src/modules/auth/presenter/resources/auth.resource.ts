@@ -5,7 +5,7 @@ import { AuthEntity } from 'src/common/entities/auth.entity';
 export class AuthResource {
   convert(payload: AuthEntity) {
     return {
-      accessToken: payload.accessToken,
+      access_token: payload.accessToken,
     };
   }
 }
