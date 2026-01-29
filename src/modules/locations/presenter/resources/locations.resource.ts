@@ -14,7 +14,7 @@ export class LocationResource {
       address: payload.address,
       floor: payload.floor,
       room: payload.room,
-      fire_sensor: payload.fireSensors?.map((fireSensor) =>
+      fire_sensors: payload.fireSensors?.map((fireSensor) =>
         this.fireSensorResource.convert(fireSensor),
       ),
     };
