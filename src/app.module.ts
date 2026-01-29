@@ -14,6 +14,7 @@ import { FireSensorDao } from './common/dao/fire-sensor.dao';
 import { SensorReadingDao } from './common/dao/sensor-reading.dao';
 import { RoleDao } from './common/dao/role.dao';
 import { RolesModule } from './modules/roles/roles.module';
+import { FireSensorsModule } from './modules/fire-sensors/fire-sensors.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { RolesModule } from './modules/roles/roles.module';
         };
       },
     }),
+    FireSensorsModule,
   ],
 })
 export class AppModule {}

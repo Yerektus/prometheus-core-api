@@ -14,6 +14,6 @@ import { UsersModule } from '../users/users.module';
   ],
   controllers: [LocationsController],
   providers: [LocationsService, LocationsRepository, LocationResource],
-  exports: [LocationsService],
+  exports: [LocationsService, LocationResource],
 })
 export class LocationsModule {}
