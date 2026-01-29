@@ -11,5 +11,5 @@ export class LocationEntity extends BaseEntity {
   latitude: number;
   longitude: number;
   users?: UserEntity[];
-  fireSensor?: FireSensorEntity[];
+  fireSensors?: FireSensorEntity[];
 }

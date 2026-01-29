@@ -14,12 +14,17 @@ import { UserResource } from './resources/user.resource';
 import { CreateUserBody } from 'src/modules/users/presenter/bodies/create-user.body';
 import { GetUserIdParam } from './params/get-user-id.param';
 import { UpdateUserBody } from './bodies/update-user.body';
+import { CreateLocationAndFireSensorBody } from 'src/modules/locations/presenter/bodies/create-location-and-fire-sensor.body';
+import { LocationsService } from 'src/modules/locations/domain/locations.service';
+import { LocationResource } from 'src/modules/locations/presenter/resources/locations.resource';
 
 @Controller('/v1/users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly userResource: UserResource,
+    private readonly locationSerive: LocationsService,
+    private readonly locationResource: LocationResource,
   ) {}
 
   @Authorization('USER')
@@ -36,6 +41,31 @@ export class UsersController {
 
     return {
       data: this.userResource.convert(user),
+    };
+  }
+
+  @Authorization('USER')
+  @Post('/:user_id/locations/sensors')
+  async createFireSensorAndLocation(
+    @Param() param: GetUserIdParam,
+    @Body() body: CreateLocationAndFireSensorBody,
+  ) {
+    const location = await this.locationSerive.createFireSensorAndLocation(
+      param.user_id,
+      {
+        country: body.country,
+        city: body.city,
+        address: body.address,
+        floor: body.floor,
+        room: body.room,
+        serialNumber: body.serial_number,
+        model: body.model,
+        isActive: body.is_active,
+      },
+    );
+
+    return {
+      data: this.locationResource.convert(location),
     };
   }
 

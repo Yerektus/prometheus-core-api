@@ -14,7 +14,6 @@ export class LocationDao extends BaseDao {
   @Column({
     name: 'street',
     type: 'varchar',
-    unique: true,
     length: 255,
     nullable: false,
   })

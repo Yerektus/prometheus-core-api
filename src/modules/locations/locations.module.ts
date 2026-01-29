@@ -6,11 +6,13 @@ import { LocationResource } from './presenter/resources/locations.resource';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocationDao } from 'src/common/dao/location.dao';
 import { UsersModule } from '../users/users.module';
+import { FireSensorsModule } from '../fire-sensors/fire-sensors.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([LocationDao]),
     forwardRef(() => UsersModule),
+    forwardRef(() => FireSensorsModule),
   ],
   controllers: [LocationsController],
   providers: [LocationsService, LocationsRepository, LocationResource],

@@ -8,6 +8,8 @@ import { UsersRepository } from 'src/modules/users/data/users.repository';
 import { UserDao } from 'src/common/dao/user.dao';
 import { CreateLocationDto } from '../dto/create-location.dto';
 import { UpdateLocationDto } from '../dto/update-location.dto';
+import { CreateLocationAndFireSensorDto } from '../dto/create-location-and-fire-sensor.dto';
+import { FireSensorDao } from 'src/common/dao/fire-sensor.dao';
 
 @Injectable()
 export class LocationsRepository {
@@ -30,24 +32,82 @@ export class LocationsRepository {
         return null;
       }
 
-      const location = await this.locationsRepositry.save({
-        id: uuidv4(),
+      let location = await this.locationsRepositry.findOne({
+        where: {
+          country: payload.country,
+          city: payload.city,
+          address: payload.address,
+          floor: payload.floor,
+          room: payload.room,
+        },
+      });
+
+      if (!location) {
+        location = await this.locationsRepositry.save({
+          id: uuidv4(),
+          country: payload.country,
+          city: payload.city,
+          address: payload.address,
+          floor: payload.floor,
+          room: payload.room,
+          latitude: 0, //todo(yerektus): auto generate latitude
+          longitude: 0, //todo(yerektus): auto generate longitude
+        });
+      }
+
+      await userRepo
+        .createQueryBuilder()
+        .insert()
+        .into('user_locations')
+        .values({ user_id: payload.owner_id, location_id: location.id })
+        .orIgnore()
+        .execute();
+
+      return location;
+    });
+  }
+
+  insertAndGetLocationAndFireSensor(
+    userId: string,
+    payload: CreateLocationAndFireSensorDto,
+  ): Promise<LocationEntity | null> {
+    return this.dataSource.transaction(async (manager) => {
+      const fireSensorsRepo = manager.getRepository(FireSensorDao);
+      const locationsRepo = manager.getRepository(LocationDao);
+
+      const location = await this.insertAndGetLocation({
+        owner_id: userId,
         country: payload.country,
         city: payload.city,
         address: payload.address,
         floor: payload.floor,
         room: payload.room,
-        latitude: 0, //todo(yerektus): auto generate latitude
-        longitude: 0, //todo(yerektus): auto generate longitude
       });
 
-      await userRepo
-        .createQueryBuilder()
-        .relation(UserDao, 'locations')
-        .of(payload.owner_id)
-        .add(location.id);
+      if (!location) {
+        return null;
+      }
 
-      return location;
+      await fireSensorsRepo.save({
+        id: uuidv4(),
+        serialNumber: payload.serialNumber,
+        model: payload.model,
+        isActive: payload.isActive,
+        location: {
+          id: location.id,
+        },
+      });
+
+      const newLocation = await locationsRepo.findOne({
+        where: {
+          id: location.id,
+        },
+        relations: {
+          fireSensors: true,
+        },
+      });
+
+      return newLocation;
     });
   }
 

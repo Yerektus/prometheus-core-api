@@ -62,7 +62,17 @@ export class UserDao extends BaseDao {
   accessTokens: UserAccessTokenDao[];
 
   @ManyToMany(() => LocationDao, (location) => location.users)
-  @JoinTable({ name: 'user_locations' })
+  @JoinTable({
+    name: 'user_locations',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'location_id',
+      referencedColumnName: 'id',
+    },
+  })
   locations: LocationDao[];
 
   @ManyToMany(() => RoleDao, (role) => role.users)

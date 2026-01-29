@@ -1,14 +1,22 @@
+import { Injectable } from '@nestjs/common';
 import { LocationEntity } from 'src/common/entities/location.entity';
+import { FireSensorsResource } from 'src/modules/fire-sensors/presenter/resources/fire-sensors.resource';
 
+@Injectable()
 export class LocationResource {
-  convert(location: LocationEntity) {
+  constructor(private readonly fireSensorResource: FireSensorsResource) {}
+
+  convert(payload: LocationEntity) {
     return {
-      id: location.id,
-      country: location.country,
-      city: location.city,
-      address: location.address,
-      floor: location.floor,
-      room: location.room,
+      id: payload.id,
+      country: payload.country,
+      city: payload.city,
+      address: payload.address,
+      floor: payload.floor,
+      room: payload.room,
+      fire_sensor: payload.fireSensors?.map((fireSensor) =>
+        this.fireSensorResource.convert(fireSensor),
+      ),
     };
   }
 }

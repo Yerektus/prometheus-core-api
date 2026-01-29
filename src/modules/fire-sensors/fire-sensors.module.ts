@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { FireSensorsController } from './presenter/fire-sensors.controller';
 import { FireSensorsResource } from './presenter/resources/fire-sensors.resource';
 import { FireSensorsService } from './domain/fire-sensors.service';
@@ -8,8 +8,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FireSensorDao } from 'src/common/dao/fire-sensor.dao';
 
 @Module({
-  imports: [LocationsModule, TypeOrmModule.forFeature([FireSensorDao])],
+  imports: [
+    TypeOrmModule.forFeature([FireSensorDao]),
+    forwardRef(() => LocationsModule),
+  ],
   controllers: [FireSensorsController],
   providers: [FireSensorsResource, FireSensorsService, FireSensorsRepository],
+  exports: [FireSensorsResource, FireSensorsService],
 })
 export class FireSensorsModule {}

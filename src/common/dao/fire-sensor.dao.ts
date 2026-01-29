@@ -17,6 +17,7 @@ export class FireSensorDao extends BaseDao {
   @Column({
     name: 'installed_at',
     type: 'timestamp with time zone',
+    nullable: true,
   })
   installedAt: Date | null;
 
