@@ -12,7 +12,11 @@ export class FireSensorsRepository {
   ) {}
 
   getFireSensors(): Promise<FireSensorEntity[]> {
-    return this.fireSensorsRepository.find();
+    return this.fireSensorsRepository.find({
+      relations: {
+        location: true,
+      },
+    });
   }
 
   getFireSensorById(fireSensorId: string): Promise<FireSensorEntity | null> {

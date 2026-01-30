@@ -10,6 +10,14 @@ export class FireSensorsResource {
       model: payload.model,
       is_active: payload.isActive,
       installed_at: payload.installedAt,
+      location: {
+        id: payload.location.id,
+        country: payload.location.country,
+        city: payload.location.city,
+        address: payload.location.address,
+        floor: payload.location.floor,
+        room: payload.location.room,
+      },
     };
   }
 }
