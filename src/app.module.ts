@@ -15,6 +15,7 @@ import { SensorReadingDao } from './common/dao/sensor-reading.dao';
 import { RoleDao } from './common/dao/role.dao';
 import { RolesModule } from './modules/roles/roles.module';
 import { FireSensorsModule } from './modules/fire-sensors/fire-sensors.module';
+import { SensorReadingModule } from './modules/sensor-reading/sensor-reading.module';
 
 @Module({
   imports: [
@@ -22,6 +23,8 @@ import { FireSensorsModule } from './modules/fire-sensors/fire-sensors.module';
     UsersModule,
     LocationsModule,
     RolesModule,
+    FireSensorsModule,
+    SensorReadingModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [getDatabaseConfig, getAppConfig, getJwtConfig],
@@ -50,7 +53,6 @@ import { FireSensorsModule } from './modules/fire-sensors/fire-sensors.module';
         };
       },
     }),
-    FireSensorsModule,
   ],
 })
 export class AppModule {}

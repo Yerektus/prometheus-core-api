@@ -7,6 +7,7 @@ export enum ErrorCode {
   UserNotFound = 'user_not_found',
   OwnerNotFound = 'owner_not_found',
   RoleNotFound = 'role_not_found',
+  SensorReadingNotFound = 'sensor_reading_not_found',
   FireSensorNotFound = 'fire_sensor_not_found',
   CredentialsAreInvalid = 'credentials_are_invalid',
 }
