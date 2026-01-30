@@ -128,7 +128,11 @@ export class LocationsRepository {
   }
 
   getLocations(): Promise<LocationEntity[]> {
-    return this.locationsRepositry.find();
+    return this.locationsRepositry.find({
+      relations: {
+        fireSensors: true,
+      },
+    });
   }
 
   getLocationsByUserId(userId: string): Promise<LocationEntity[]> {
