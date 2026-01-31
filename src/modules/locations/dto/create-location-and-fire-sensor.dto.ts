@@ -3,7 +3,7 @@ export class CreateLocationAndFireSensorDto {
   city: string;
   address: string;
   floor?: string;
-  room?: string;
+  flat?: string;
   serialNumber?: string | null;
   model?: string | null;
   isActive?: boolean;

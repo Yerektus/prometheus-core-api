@@ -3,5 +3,5 @@ export class UpdateLocationDto {
   city?: string;
   address?: string;
   floor?: string | null;
-  room?: string | null;
+  flat?: string | null;
 }

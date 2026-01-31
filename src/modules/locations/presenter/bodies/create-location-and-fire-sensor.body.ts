@@ -28,7 +28,7 @@ export class CreateLocationAndFireSensorBody {
 
   @IsString()
   @IsOptional()
-  room?: string;
+  flat?: string;
 
   @IsString()
   @IsOptional()

@@ -38,7 +38,7 @@ export class LocationsRepository {
           city: payload.city,
           address: payload.address,
           floor: payload.floor,
-          room: payload.room,
+          flat: payload.flat,
         },
       });
 
@@ -49,7 +49,7 @@ export class LocationsRepository {
           city: payload.city,
           address: payload.address,
           floor: payload.floor,
-          room: payload.room,
+          flat: payload.flat,
           latitude: 0, //todo(yerektus): auto generate latitude
           longitude: 0, //todo(yerektus): auto generate longitude
         });
@@ -81,7 +81,7 @@ export class LocationsRepository {
         city: payload.city,
         address: payload.address,
         floor: payload.floor,
-        room: payload.room,
+        flat: payload.flat,
       });
 
       if (!location) {
@@ -156,7 +156,7 @@ export class LocationsRepository {
         city: payload.city,
         address: payload.address,
         floor: payload.floor,
-        room: payload.room,
+        flat: payload.flat,
       },
     );
 

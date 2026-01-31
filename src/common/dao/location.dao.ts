@@ -22,8 +22,8 @@ export class LocationDao extends BaseDao {
   @Column({ name: 'floor', type: 'varchar', length: 20 })
   floor: string | null;
 
-  @Column({ name: 'room', type: 'varchar', length: 20 })
-  room: string | null;
+  @Column({ name: 'flat', type: 'varchar', length: 20 })
+  flat: string | null;
 
   @Column({
     name: 'latitude',

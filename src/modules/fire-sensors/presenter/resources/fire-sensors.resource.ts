@@ -16,7 +16,7 @@ export class FireSensorsResource {
         city: payload.location.city,
         address: payload.location.address,
         floor: payload.location.floor,
-        room: payload.location.room,
+        room: payload.location.flat,
         users: payload.location.users?.map((user) => ({
           id: user.id,
           last_name: user.lastName,

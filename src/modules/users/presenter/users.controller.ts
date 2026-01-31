@@ -57,7 +57,7 @@ export class UsersController {
         city: body.city,
         address: body.address,
         floor: body.floor,
-        room: body.room,
+        flat: body.flat,
         serialNumber: body.serial_number,
         model: body.model,
         isActive: body.is_active,

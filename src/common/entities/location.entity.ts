@@ -7,7 +7,7 @@ export class LocationEntity extends BaseEntity {
   city: string;
   address: string;
   floor: string | null;
-  room: string | null;
+  flat: string | null;
   latitude: number;
   longitude: number;
   users?: UserEntity[];

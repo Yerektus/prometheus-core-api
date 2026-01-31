@@ -13,7 +13,7 @@ export class LocationResource {
       city: payload.city,
       address: payload.address,
       floor: payload.floor,
-      room: payload.room,
+      flat: payload.flat,
       fire_sensors: payload.fireSensors?.map((fireSensor) =>
         this.fireSensorResource.convert(fireSensor),
       ),

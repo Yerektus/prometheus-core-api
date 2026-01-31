@@ -4,5 +4,5 @@ export class CreateLocationDto {
   city: string;
   address: string;
   floor?: string;
-  room?: string;
+  flat?: string;
 }
