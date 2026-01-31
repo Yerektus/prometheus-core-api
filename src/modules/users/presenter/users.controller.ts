@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { Authorization } from 'src/modules/auth/decorators/authorization.decorator';
 import { Authorized } from 'src/modules/auth/decorators/authorized.decorator';
@@ -17,6 +18,7 @@ import { UpdateUserBody } from './bodies/update-user.body';
 import { CreateLocationAndFireSensorBody } from 'src/modules/locations/presenter/bodies/create-location-and-fire-sensor.body';
 import { LocationsService } from 'src/modules/locations/domain/locations.service';
 import { LocationResource } from 'src/modules/locations/presenter/resources/locations.resource';
+import { GetFullnameQuery } from './queries/get-fullname-query';
 
 @Controller('/v1/users')
 export class UsersController {
@@ -86,6 +88,19 @@ export class UsersController {
 
     return {
       data: users.map((user) => this.userResource.convert(user)),
+    };
+  }
+
+  @Authorization('USER')
+  @Get('by_fullname')
+  async getUserByFullname(@Query() queries: GetFullnameQuery) {
+    const user = await this.usersService.getUserByFullname(
+      queries.last_name,
+      queries.first_name,
+    );
+
+    return {
+      data: this.userResource.convert(user),
     };
   }
 

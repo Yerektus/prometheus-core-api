@@ -32,6 +32,22 @@ export class UsersService {
     return savedUser;
   }
 
+  async getUserByFullname(
+    lastName: string,
+    firstName: string,
+  ): Promise<UserEntity> {
+    const user = await this.usersRepository.getUserByFullname(
+      lastName,
+      firstName,
+    );
+
+    if (!user) {
+      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
+    }
+
+    return user;
+  }
+
   async getUserById(userId: string): Promise<UserEntity> {
     const user = await this.usersRepository.getUserById(userId);
 

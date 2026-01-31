@@ -61,6 +61,18 @@ export class UsersRepository {
     });
   }
 
+  getUserByFullname(
+    lastName: string,
+    firstName: string,
+  ): Promise<UserEntity | null> {
+    return this.userRepository.findOne({
+      where: {
+        firstName: firstName,
+        lastName: lastName,
+      },
+    });
+  }
+
   getUserByEmailOrUsername(
     email: string,
     username: string,
