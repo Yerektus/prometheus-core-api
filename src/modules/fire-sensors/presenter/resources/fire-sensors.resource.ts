@@ -17,6 +17,14 @@ export class FireSensorsResource {
         address: payload.location.address,
         floor: payload.location.floor,
         room: payload.location.room,
+        users: payload.location.users?.map((user) => ({
+          id: user.id,
+          last_name: user.lastName,
+          first_name: user.firstName,
+          email: user.email,
+          phone_number: user.phoneNumbers,
+          username: user.username,
+        })),
       },
     };
   }

@@ -14,7 +14,9 @@ export class FireSensorsRepository {
   getFireSensors(): Promise<FireSensorEntity[]> {
     return this.fireSensorsRepository.find({
       relations: {
-        location: true,
+        location: {
+          users: true,
+        },
       },
     });
   }
