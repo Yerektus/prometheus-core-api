@@ -52,7 +52,7 @@ export class UsersController {
     @Param() param: GetUserIdParam,
     @Body() body: CreateLocationAndFireSensorBody,
   ) {
-    const location = await this.locationSerive.createFireSensorAndLocation(
+    const user = await this.locationSerive.createFireSensorAndLocation(
       param.user_id,
       {
         country: body.country,
@@ -67,7 +67,7 @@ export class UsersController {
     );
 
     return {
-      data: this.locationResource.convert(location),
+      data: this.userResource.convert(user),
     };
   }
 

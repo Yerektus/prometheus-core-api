@@ -61,6 +61,19 @@ export class UsersRepository {
     });
   }
 
+  getUserWithLocationAndFireSensorById(id: string): Promise<UserEntity | null> {
+    return this.userRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        locations: {
+          fireSensors: true,
+        },
+      },
+    });
+  }
+
   getUserByFullname(
     lastName: string,
     firstName: string,
