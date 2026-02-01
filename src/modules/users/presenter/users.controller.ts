@@ -64,7 +64,6 @@ export class UsersController {
         flat: body.flat,
         serialNumber: body.serial_number,
         model: body.model,
-        isActive: body.is_active,
       },
     );
 
@@ -89,7 +88,6 @@ export class UsersController {
         flat: body.flat,
         serialNumber: body.serial_number,
         model: body.model,
-        isActive: body.is_active,
       },
     );
 

@@ -93,7 +93,6 @@ export class LocationsRepository {
         id: uuidv4(),
         serialNumber: payload.serialNumber,
         model: payload.model,
-        isActive: payload.isActive,
         location: {
           id: location.id,
         },
@@ -146,7 +145,6 @@ export class LocationsRepository {
         {
           serialNumber: payload.serialNumber,
           model: payload.model,
-          isActive: payload.isActive,
         },
       );
 

@@ -1,10 +1,4 @@
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MinLength,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class UpdateLocationAndFireSensorBody {
   @IsString()
@@ -39,8 +33,4 @@ export class UpdateLocationAndFireSensorBody {
   @IsOptional()
   @MinLength(3)
   model: string;
-
-  @IsBoolean()
-  @IsNotEmpty()
-  is_active: boolean;
 }

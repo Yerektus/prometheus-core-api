@@ -6,5 +6,4 @@ export class CreateLocationAndFireSensorDto {
   flat?: string;
   serialNumber?: string | null;
   model?: string | null;
-  isActive?: boolean;
 }
