@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { Authorization } from 'src/modules/auth/decorators/authorization.decorator';
@@ -19,6 +20,7 @@ import { CreateLocationAndFireSensorBody } from 'src/modules/locations/presenter
 import { LocationsService } from 'src/modules/locations/domain/locations.service';
 import { LocationResource } from 'src/modules/locations/presenter/resources/locations.resource';
 import { GetFullnameQuery } from './queries/get-fullname-query';
+import { UpdateLocationAndFireSensorBody } from 'src/modules/locations/presenter/bodies/update-location-and-fire-sensor.body';
 
 @Controller('/v1/users')
 export class UsersController {
@@ -53,6 +55,31 @@ export class UsersController {
     @Body() body: CreateLocationAndFireSensorBody,
   ) {
     const user = await this.locationSerive.createFireSensorAndLocation(
+      param.user_id,
+      {
+        country: body.country,
+        city: body.city,
+        address: body.address,
+        floor: body.floor,
+        flat: body.flat,
+        serialNumber: body.serial_number,
+        model: body.model,
+        isActive: body.is_active,
+      },
+    );
+
+    return {
+      data: this.userResource.convert(user),
+    };
+  }
+
+  @Authorization('USER')
+  @Put('/:user_id/locations/sensors')
+  async updateFireSensorAndLocation(
+    @Param() param: GetUserIdParam,
+    @Body() body: UpdateLocationAndFireSensorBody,
+  ) {
+    const user = await this.locationSerive.updateFireSensorAndLocation(
       param.user_id,
       {
         country: body.country,

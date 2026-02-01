@@ -8,6 +8,7 @@ import { UpdateLocationDto } from '../dto/update-location.dto';
 import { CreateLocationAndFireSensorDto } from '../dto/create-location-and-fire-sensor.dto';
 import { UsersRepository } from 'src/modules/users/data/users.repository';
 import { UserEntity } from 'src/common/entities/user.entity';
+import { UpdateLocationAndFireSensorDto } from '../dto/update-location-and-fire-sensor';
 
 @Injectable()
 export class LocationsService {
@@ -42,6 +43,38 @@ export class LocationsService {
         userId,
         payload,
       );
+
+    if (!location) {
+      throw buildHttpError(
+        ErrorCode.InternalServerError,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    const userWithLocationAndFireSensor =
+      await this.usersRepository.getUserWithLocationAndFireSensorById(user.id);
+
+    if (!userWithLocationAndFireSensor) {
+      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
+    }
+
+    return userWithLocationAndFireSensor;
+  }
+
+  async updateFireSensorAndLocation(
+    userId: string,
+    payload: UpdateLocationAndFireSensorDto,
+  ): Promise<UserEntity> {
+    const user = await this.usersRepository.getUserById(userId);
+
+    if (!user) {
+      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
+    }
+
+    const location = await this.locationsRepository.updateLocationAndFireSensor(
+      userId,
+      payload,
+    );
 
     if (!location) {
       throw buildHttpError(
