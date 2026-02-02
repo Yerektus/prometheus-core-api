@@ -10,22 +10,39 @@ export class FireSensorsResource {
       model: payload.model,
       is_active: payload.isActive,
       installed_at: payload.installedAt,
-      location: {
-        id: payload.location.id,
-        country: payload.location.country,
-        city: payload.location.city,
-        address: payload.location.address,
-        floor: payload.location.floor,
-        flat: payload.location.flat,
-        users: payload.location.users?.map((user) => ({
-          id: user.id,
-          last_name: user.lastName,
-          first_name: user.firstName,
-          email: user.email,
-          phone_number: user.phoneNumbers,
-          username: user.username,
-        })),
-      },
+
+      ...(payload.sensorRedings
+        ? {
+            fire_readings: payload.sensorRedings?.map((reading) => ({
+              id: reading.id,
+              temperature_c: reading.temperatureC,
+              humidity_pct: reading.humidityPct,
+              gas_ppm: reading.gasPpm,
+              recordedAt: reading.recordedAt,
+            })),
+          }
+        : {}),
+
+      ...(payload.location
+        ? {
+            location: {
+              id: payload.location.id,
+              country: payload.location.country,
+              city: payload.location.city,
+              address: payload.location.address,
+              floor: payload.location.floor,
+              flat: payload.location.flat,
+              users: (payload.location.users ?? []).map((user) => ({
+                id: user.id,
+                last_name: user.lastName,
+                first_name: user.firstName,
+                email: user.email,
+                phone_number: user.phoneNumbers,
+                username: user.username,
+              })),
+            },
+          }
+        : {}),
     };
   }
 }

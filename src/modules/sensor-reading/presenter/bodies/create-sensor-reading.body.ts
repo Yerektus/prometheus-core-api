@@ -1,6 +1,19 @@
+import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+
 export class CreateSensorReadingBody {
-  temperatureC: number;
-  humidityPct: number;
-  gasPpm: number;
-  recordedAt: Date;
+  @IsUUID()
+  @IsNotEmpty()
+  fire_sensor_id: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  temperature_c: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  humidity_pct: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  gas_ppm: number;
 }

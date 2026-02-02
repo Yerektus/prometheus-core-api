@@ -165,6 +165,14 @@ export class FireSensorsRepository {
     });
   }
 
+  getFireSensorsWithSensorReadings(): Promise<FireSensorEntity[]> {
+    return this.fireSensorsRepository.find({
+      relations: {
+        sensorRedings: true,
+      },
+    });
+  }
+
   getFireSensorById(fireSensorId: string): Promise<FireSensorEntity | null> {
     return this.fireSensorsRepository.findOne({
       where: {

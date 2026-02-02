@@ -52,6 +52,10 @@ export class FireSensorsService {
     return this.fireSensorsRepository.getFireSensors();
   }
 
+  getFireSensorsWithSensorReadings(): Promise<FireSensorEntity[]> {
+    return this.fireSensorsRepository.getFireSensorsWithSensorReadings();
+  }
+
   async getFireSensorById(fireSensorId: string) {
     const fireSensor =
       await this.fireSensorsRepository.getFireSensorById(fireSensorId);

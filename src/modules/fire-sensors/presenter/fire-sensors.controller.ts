@@ -81,6 +81,18 @@ export class FireSensorsController {
     };
   }
 
+  @Get('/sensor_readings')
+  async getFireSensorsWithSensorReadings() {
+    const fireSensors =
+      await this.fireSensorsService.getFireSensorsWithSensorReadings();
+
+    return {
+      data: fireSensors.map((fireSensor) =>
+        this.fireSensorsResource.convert(fireSensor),
+      ),
+    };
+  }
+
   @Get('/')
   async getFireSensorById(@Param() param: GetFireSensorIdParam) {
     const fireSensor = await this.fireSensorsService.getFireSensorById(

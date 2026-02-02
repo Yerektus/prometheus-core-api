@@ -28,11 +28,11 @@ export class SensorReadingDao extends BaseDao {
   })
   gasPpm: number;
 
-  @Column({ name: 'recorded_at', type: 'time with time zone' })
+  @Column({ name: 'recorded_at', type: 'timestamp with time zone' })
   recordedAt: Date;
 
   @Column({ name: 'fire_sensor_id', type: 'uuid' })
-  fire_sensor_id: string;
+  fireSensorId: string;
 
   @ManyToOne(() => FireSensorDao, (fireSensor) => fireSensor.sensorRedings)
   @JoinColumn({ name: 'fire_sensor_id' })
