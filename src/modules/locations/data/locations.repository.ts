@@ -8,9 +8,6 @@ import { UsersRepository } from 'src/modules/users/data/users.repository';
 import { UserDao } from 'src/common/dao/user.dao';
 import { CreateLocationDto } from '../dto/create-location.dto';
 import { UpdateLocationDto } from '../dto/update-location.dto';
-import { CreateLocationAndFireSensorDto } from '../dto/create-location-and-fire-sensor.dto';
-import { FireSensorDao } from 'src/common/dao/fire-sensor.dao';
-import { UpdateLocationAndFireSensorDto } from '../dto/update-location-and-fire-sensor';
 
 @Injectable()
 export class LocationsRepository {
@@ -65,103 +62,6 @@ export class LocationsRepository {
         .execute();
 
       return location;
-    });
-  }
-
-  insertAndGetLocationAndFireSensor(
-    userId: string,
-    payload: CreateLocationAndFireSensorDto,
-  ): Promise<LocationEntity | null> {
-    return this.dataSource.transaction(async (manager) => {
-      const fireSensorsRepo = manager.getRepository(FireSensorDao);
-      const locationsRepo = manager.getRepository(LocationDao);
-
-      const location = await this.insertAndGetLocation({
-        owner_id: userId,
-        country: payload.country,
-        city: payload.city,
-        address: payload.address,
-        floor: payload.floor,
-        flat: payload.flat,
-      });
-
-      if (!location) {
-        return null;
-      }
-
-      await fireSensorsRepo.save({
-        id: uuidv4(),
-        serialNumber: payload.serialNumber,
-        model: payload.model,
-        location: {
-          id: location.id,
-        },
-      });
-
-      const newLocation = await locationsRepo.findOne({
-        where: {
-          id: location.id,
-        },
-        relations: {
-          fireSensors: true,
-        },
-      });
-
-      return newLocation;
-    });
-  }
-
-  updateLocationAndFireSensor(
-    userId: string,
-    payload: UpdateLocationAndFireSensorDto,
-  ): Promise<LocationEntity | null> {
-    return this.dataSource.transaction(async (manager) => {
-      const fireSensorsRepo = manager.getRepository(FireSensorDao);
-      const locationsRepo = manager.getRepository(LocationDao);
-
-      const location = await this.getLocationByAddress(payload.address);
-
-      if (!location) {
-        return null;
-      }
-
-      const updatedLocation = await this.updateLocationById(location.id, {
-        country: payload.country,
-        city: payload.city,
-        address: payload.address,
-        floor: payload.floor,
-        flat: payload.flat,
-      });
-
-      if (!updatedLocation) {
-        return null;
-      }
-
-      const updatedFireSensor = await fireSensorsRepo.update(
-        {
-          model: payload.model,
-          serialNumber: payload.serialNumber,
-        },
-        {
-          serialNumber: payload.serialNumber,
-          model: payload.model,
-        },
-      );
-
-      if (!updatedFireSensor.affected) {
-        return null;
-      }
-
-      const newLocation = await locationsRepo.findOne({
-        where: {
-          id: location.id,
-        },
-        relations: {
-          fireSensors: true,
-        },
-      });
-
-      return newLocation;
     });
   }
 

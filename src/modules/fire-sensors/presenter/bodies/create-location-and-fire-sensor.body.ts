@@ -1,6 +1,17 @@
-import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 
 export class CreateLocationAndFireSensorBody {
+  @IsUUID()
+  @MinLength(3)
+  @IsNotEmpty()
+  owner_id: string;
+
   @IsString()
   @MinLength(3)
   @IsNotEmpty()

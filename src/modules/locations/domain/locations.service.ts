@@ -5,17 +5,10 @@ import { buildHttpError } from 'src/common/utils/build-http-error';
 import { ErrorCode } from 'src/common/constants/error-code.constant';
 import { CreateLocationDto } from '../dto/create-location.dto';
 import { UpdateLocationDto } from '../dto/update-location.dto';
-import { CreateLocationAndFireSensorDto } from '../dto/create-location-and-fire-sensor.dto';
-import { UsersRepository } from 'src/modules/users/data/users.repository';
-import { UserEntity } from 'src/common/entities/user.entity';
-import { UpdateLocationAndFireSensorDto } from '../dto/update-location-and-fire-sensor';
 
 @Injectable()
 export class LocationsService {
-  constructor(
-    private readonly locationsRepository: LocationsRepository,
-    private readonly usersRepository: UsersRepository,
-  ) {}
+  constructor(private readonly locationsRepository: LocationsRepository) {}
 
   async createLocation(payload: CreateLocationDto): Promise<LocationEntity> {
     const savedLocation =
@@ -26,71 +19,6 @@ export class LocationsService {
     }
 
     return savedLocation;
-  }
-
-  async createFireSensorAndLocation(
-    userId: string,
-    payload: CreateLocationAndFireSensorDto,
-  ): Promise<UserEntity> {
-    const user = await this.usersRepository.getUserById(userId);
-
-    if (!user) {
-      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
-    }
-
-    const location =
-      await this.locationsRepository.insertAndGetLocationAndFireSensor(
-        userId,
-        payload,
-      );
-
-    if (!location) {
-      throw buildHttpError(
-        ErrorCode.InternalServerError,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-
-    const userWithLocationAndFireSensor =
-      await this.usersRepository.getUserWithLocationAndFireSensorById(user.id);
-
-    if (!userWithLocationAndFireSensor) {
-      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
-    }
-
-    return userWithLocationAndFireSensor;
-  }
-
-  async updateFireSensorAndLocation(
-    userId: string,
-    payload: UpdateLocationAndFireSensorDto,
-  ): Promise<UserEntity> {
-    const user = await this.usersRepository.getUserById(userId);
-
-    if (!user) {
-      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
-    }
-
-    const location = await this.locationsRepository.updateLocationAndFireSensor(
-      userId,
-      payload,
-    );
-
-    if (!location) {
-      throw buildHttpError(
-        ErrorCode.InternalServerError,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-
-    const userWithLocationAndFireSensor =
-      await this.usersRepository.getUserWithLocationAndFireSensorById(user.id);
-
-    if (!userWithLocationAndFireSensor) {
-      throw buildHttpError(ErrorCode.UserNotFound, HttpStatus.NOT_FOUND);
-    }
-
-    return userWithLocationAndFireSensor;
   }
 
   async getLocationById(locationId: string): Promise<LocationEntity> {

@@ -1,4 +1,5 @@
 export class CreateLocationAndFireSensorDto {
+  ownerId: string;
   country: string;
   city: string;
   address: string;
