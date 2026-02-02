@@ -62,4 +62,8 @@ export class FireSensorsService {
 
     return fireSensor;
   }
+
+  async deleteFireSensorById(id: string) {
+    await this.fireSensorsRepository.softDeleteFireSensorById(id);
+  }
 }

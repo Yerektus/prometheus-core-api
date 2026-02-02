@@ -172,4 +172,10 @@ export class FireSensorsRepository {
       },
     });
   }
+
+  async softDeleteFireSensorById(id: string) {
+    await this.fireSensorsRepository.softDelete({
+      id: id,
+    });
+  }
 }

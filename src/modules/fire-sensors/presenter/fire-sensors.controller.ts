@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { FireSensorsService } from '../domain/fire-sensors.service';
 import { FireSensorsResource } from './resources/fire-sensors.resource';
 import { GetFireSensorIdParam } from './params/get-fire-sensor-id.param';
@@ -82,5 +90,11 @@ export class FireSensorsController {
     return {
       data: this.fireSensorsResource.convert(fireSensor),
     };
+  }
+
+  @Authorization('USER')
+  @Delete('/:fire_sensor_id')
+  async deleteFireSensorById(@Param() param: GetFireSensorIdParam) {
+    await this.fireSensorsService.deleteFireSensorById(param.fire_sensor_id);
   }
 }
