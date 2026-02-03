@@ -13,12 +13,12 @@ export class FireSensorsResource {
 
       ...(payload.sensorRedings
         ? {
-            fire_readings: payload.sensorRedings?.map((reading) => ({
+            sensor_readings: payload.sensorRedings?.map((reading) => ({
               id: reading.id,
               temperature_c: reading.temperatureC,
               humidity_pct: reading.humidityPct,
               gas_ppm: reading.gasPpm,
-              recordedAt: reading.recordedAt,
+              recorded_at: reading.recordedAt,
             })),
           }
         : {}),
