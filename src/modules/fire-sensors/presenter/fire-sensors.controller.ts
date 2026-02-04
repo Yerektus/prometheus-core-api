@@ -93,7 +93,7 @@ export class FireSensorsController {
     };
   }
 
-  @Get('/')
+  @Get('/:fire_sensor_id')
   async getFireSensorById(@Param() param: GetFireSensorIdParam) {
     const fireSensor = await this.fireSensorsService.getFireSensorById(
       param.fire_sensor_id,

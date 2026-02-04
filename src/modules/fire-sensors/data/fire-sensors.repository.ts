@@ -178,6 +178,11 @@ export class FireSensorsRepository {
       where: {
         id: fireSensorId,
       },
+      relations: {
+        location: {
+          users: true,
+        },
+      },
     });
   }
 
