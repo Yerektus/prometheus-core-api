@@ -53,6 +53,11 @@ export class SensorReadingRepository {
       where: {
         id: sensorReadingId,
       },
+      relations: {
+        fireSensor: {
+          location: true,
+        },
+      },
     });
   }
 
