@@ -61,6 +61,21 @@ export class SensorReadingRepository {
     });
   }
 
+  getSensorReadingsByFireSensorId(
+    fireSensorId: string,
+  ): Promise<SensorReadingEntity[]> {
+    return this.sensorReadingRepository.find({
+      where: {
+        fireSensorId: fireSensorId,
+      },
+      relations: {
+        fireSensor: {
+          location: true,
+        },
+      },
+    });
+  }
+
   getSensorReadings(
     limit: number,
     page: number,

@@ -5,6 +5,7 @@ import { SensorReadingResource } from './resources/sensor-reading.resource';
 import { GetSensorReadingsPaginationQuery } from './queries/get-sensor-readings-pagination.query';
 import { CreateSensorReadingBody } from './bodies/create-sensor-reading.body';
 import { Authorization } from 'src/modules/auth/decorators/authorization.decorator';
+import { GetFireSensorIdParam } from 'src/modules/fire-sensors/presenter/params/get-fire-sensor-id.param';
 
 @Controller('/v1/sensor_readings')
 export class SensorReadingController {
@@ -37,6 +38,21 @@ export class SensorReadingController {
 
     return {
       data: this.sensorReadingResource.convert(sensorReading),
+    };
+  }
+
+  @Authorization('USER')
+  @Get('/fire_sensors/:fire_sensor_id')
+  async getSensorReadingByFireSensorId(@Param() param: GetFireSensorIdParam) {
+    const sensorReading =
+      await this.sensorReadingService.getSensorReadingsByFireSensorId(
+        param.fire_sensor_id,
+      );
+
+    return {
+      data: sensorReading.map((reading) =>
+        this.sensorReadingResource.convert(reading),
+      ),
     };
   }
 

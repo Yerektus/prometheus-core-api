@@ -39,6 +39,14 @@ export class SensorReadingService {
     return sensorReading;
   }
 
+  async getSensorReadingsByFireSensorId(
+    fireSensorid: string,
+  ): Promise<SensorReadingEntity[]> {
+    return this.sensorReadingRepository.getSensorReadingsByFireSensorId(
+      fireSensorid,
+    );
+  }
+
   getSensorReadings(
     limit: number = 10,
     page: number = 1,
