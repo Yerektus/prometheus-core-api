@@ -182,6 +182,7 @@ export class FireSensorsRepository {
         location: {
           users: true,
         },
+        sensorRedings: true,
       },
     });
   }
