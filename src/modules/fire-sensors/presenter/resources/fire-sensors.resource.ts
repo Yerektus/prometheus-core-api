@@ -37,7 +37,7 @@ export class FireSensorsResource {
                 last_name: user.lastName,
                 first_name: user.firstName,
                 email: user.email,
-                phone_number: user.phoneNumbers,
+                phone_numbers: user.phoneNumbers,
                 username: user.username,
               })),
             },
