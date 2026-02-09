@@ -62,6 +62,10 @@ export class UsersService {
     return this.usersRepository.getUsers();
   }
 
+  getUsersWithFireSensors(): Promise<UserEntity[]> {
+    return this.usersRepository.getUsersWithFireSensors();
+  }
+
   async updateUserById(
     userId: string,
     payload: UpdateUserDto,

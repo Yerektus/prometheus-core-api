@@ -15,8 +15,6 @@ import { UserResource } from './resources/user.resource';
 import { CreateUserBody } from 'src/modules/users/presenter/bodies/create-user.body';
 import { GetUserIdParam } from './params/get-user-id.param';
 import { UpdateUserBody } from './bodies/update-user.body';
-import { LocationsService } from 'src/modules/locations/domain/locations.service';
-import { LocationResource } from 'src/modules/locations/presenter/resources/locations.resource';
 import { GetFullnameQuery } from './queries/get-fullname-query';
 
 @Controller('/v1/users')
@@ -24,8 +22,6 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly userResource: UserResource,
-    private readonly locationSerive: LocationsService,
-    private readonly locationResource: LocationResource,
   ) {}
 
   @Authorization('USER')
@@ -59,6 +55,16 @@ export class UsersController {
   @Get()
   async getUsers() {
     const users = await this.usersService.getUsers();
+
+    return {
+      data: users.map((user) => this.userResource.convert(user)),
+    };
+  }
+
+  @Authorization('USER')
+  @Get('/fire_sensors')
+  async getUsersWithFireSensors() {
+    const users = await this.usersService.getUsersWithFireSensors();
 
     return {
       data: users.map((user) => this.userResource.convert(user)),

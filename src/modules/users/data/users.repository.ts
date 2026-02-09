@@ -129,6 +129,17 @@ export class UsersRepository {
     });
   }
 
+  getUsersWithFireSensors(): Promise<UserEntity[]> {
+    return this.userRepository.find({
+      relations: {
+        roles: true,
+        locations: {
+          fireSensors: true,
+        },
+      },
+    });
+  }
+
   async updateUserById(
     userId: string,
     payload: UpdateUserDto,
